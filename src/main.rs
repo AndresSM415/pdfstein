@@ -1,3 +1,7 @@
+mod cli;
+mod core;
+mod utils;
+
 fn main() {
-    println!("Hello, world!");
+    println!("Conversion complete!");
 }

@@ -21,6 +21,14 @@ pub enum Format {
 #[command(name = "pdfpstein")]
 #[command(about = "Convert docx/pptx/md files to PDF", long_about = None)]
 #[command(bin_name = "pdfpstein")]
+#[command(before_help = r#"
+    ____  ____  _____          _       _
+   |  _ \|  _ \|  ___| __  ___| |_ ___(_)_ __
+   | |_) | | | | |_ | '_ \/ __| __/ _ \ | '_ \
+   |  __/| |_| |  _|| |_) \__ \ ||  __/ | | | |
+   |_|   |____/|_|  | .__/|___/\__\___|_|_| |_|
+                    |_|
+"#)]
 pub struct Args {
     /// Input file path (.docx, .pptx, or .md)
     #[arg(value_parser = validate_input_file)]

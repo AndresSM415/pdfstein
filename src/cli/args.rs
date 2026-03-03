@@ -35,7 +35,7 @@ pub struct Args {
     pub file: PathBuf,
 
     /// Output PDF file path (defaults to same name/dir as input)
-    #[arg(short, long)]
+    #[arg(short, long, value_parser = validate_output_file)]
     pub output: Option<PathBuf>,
 
     /// Force specific format (auto-detected from extension by default)
@@ -166,6 +166,20 @@ fn validate_input_file(path_str: &str) -> Result<PathBuf, String> {
 
     if !path.is_file() {
         return Err(format!("Path is not a file: {}", path.display()));
+    }
+
+    Ok(path.to_path_buf())
+}
+
+fn validate_output_file(path_str: &str) -> Result<PathBuf, String> {
+    let path = Path::new(path_str);
+
+    if !path.exists() {
+        return Err(format!("Output dir does not exist: {}", path.display()));
+    }
+
+    if !path.is_dir() {
+        return Err(format!("Path is not a dir: {}", path.display()));
     }
 
     Ok(path.to_path_buf())

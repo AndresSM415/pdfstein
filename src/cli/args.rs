@@ -105,10 +105,6 @@ pub struct Args {
     pub toc_depth: u8,
 
     // ==================== QUALITY OPTIONS ====================
-    /// PDF quality preset (fast, standard, high)
-    #[arg(short = 'q', long, default_value = "standard")]
-    pub quality: String,
-
     /// DPI for image rendering (default: 150)
     #[arg(long, default_value = "150")]
     pub dpi: u32,

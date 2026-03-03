@@ -1,9 +1,22 @@
-use clap::Parser;
+//! PDFpstein CLI entry point.
+//!
+//! This is the main entry point for the pdfpstein command-line tool.
+//! It handles argument parsing, validation, and orchestrates the conversion process.
 
-mod cli;
+use clap::Parser;
+use pdfpstein::cli::Args;
+use pdfpstein::error::Result;
 
 fn main() {
-    let args = cli::Args::parse();
+    if let Err(e) = run() {
+        eprintln!("Error: {e}");
+        std::process::exit(1);
+    }
+}
+
+/// Main entry point that returns a Result for clean error handling.
+fn run() -> Result<()> {
+    let args = Args::parse();
 
     // Validate input file exists
     if !args.file.exists() {
@@ -30,7 +43,10 @@ fn main() {
         );
     }
 
-    // TODO: conversion logic
+    // TODO: Perform conversion using the converter module
+    // let converter = pdfpstein::converter::create_converter(format);
+    // let options = pdfpstein::config::ConversionOptions::from_args(&args);
+    // converter.convert(&args.file, &output, &options)?;
 
     if !args.quiet {
         println!("Done! PDF saved to '{}'", output.display());
@@ -40,4 +56,6 @@ fn main() {
         let _ = std::process::Command::new("open").arg(&output).status(); // macOS
         // use "xdg-open" on Linux, "start" on Windows
     }
+
+    Ok(())
 }

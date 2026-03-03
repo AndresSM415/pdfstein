@@ -1,125 +1,96 @@
-The user wants me to generate a comprehensive project summary in markdown format based on the conversation history. I need to extract the key information about the PDFpstein project, including the goal, architecture, decisions made, work completed, and future plans.
+The user wants me to create a comprehensive project summary based on the conversation history. Let me extract the key information:
 
-Let me organize this information:
+1. **Project**: PDFpstein - a Rust CLI tool to convert DOCX, PPTX, and Markdown files to PDF
+2. **Architecture**: Library + binary pattern (lib.rs for reusable code, main.rs for CLI entry point)
+3. **Key decisions made in this session**:
+   - Added ASCII art logo to --help command
+   - Simplified CLI by removing advanced features for iterative development
+   - Created roadmap with versioned feature releases (v0.1.0 - v0.6.0)
 
-1. Overall Goal: Create a Rust CLI tool to convert DOCX, PPTX, and Markdown files to PDF
+4. **Current status**: v0.1.0 in early development, focusing on basic conversion first
 
-2. Key Knowledge:
-- Rust 2024 edition
-- clap 4.5.60 for CLI parsing
-- Modular architecture with library + binary pattern
-- Trait-based converter design
-- Project structure with specific modules
-- MIT License
-- Current version 0.1.0
-
-3. Recent Actions:
-- Refactored project structure from flat to modular
-- Created placeholder files for all modules
-- Set up tests directory structure
-- Fixed compilation issues (Format re-export)
-- Project compiles cleanly
-
-4. Current Plan:
-- CLI parsing is complete
-- Conversion logic not yet implemented
-- Roadmap shows DOCX, MD, PPTX parsing pending
-
-Let me write this in the specified markdown format.# Project Summary
+Let me create a comprehensive summary.# Project Summary
 
 ## Overall Goal
-Build **PDFpstein**, a Rust command-line tool that converts DOCX, PPTX, and Markdown files to PDF with extensive formatting, quality, and metadata options.
+Build PDFpstein, a Rust-based CLI tool that converts DOCX, PPTX, and Markdown files to PDF format with a modular, trait-based architecture.
 
 ## Key Knowledge
 
-### Technology Stack
-- **Language:** Rust (Edition 2024)
-- **CLI Framework:** `clap` v4.5.60 with derive macros
-- **License:** MIT (Copyright 2026 Andrés San Martin)
-
-### Architecture Decisions
-- **Library + Binary pattern:** Core logic in `lib.rs`, minimal bootstrap in `main.rs`
-- **Trait-based converters:** Each format implements `Converter` trait with factory function
-- **Modular structure:** Separate modules for `cli/`, `converter/`, `config/`, `pdf/`, `utils/`
-- **Centralized errors:** Custom `Error` enum with `Result<T>` type alias
+### Architecture
+- **Pattern**: Library + binary (`lib.rs` for reusable API, `main.rs` for CLI bootstrap)
+- **Converter design**: Trait-based approach where each format implements the `Converter` trait
+- **Factory pattern**: `create_converter()` returns appropriate converter based on format
+- **Error handling**: Centralized `Error` enum with `Result<T>` type alias
 
 ### Project Structure
 ```
 src/
-├── main.rs              # CLI entry point
-├── lib.rs               # Library root, re-exports public API
-├── error.rs             # Error types
-├── cli/                 # Argument parsing (40+ options)
-├── converter/           # Format-specific converters (docx, pptx, md)
-├── config/              # ConversionOptions struct
-├── pdf/                 # PDF generation backend
-└── utils/               # Path and filesystem utilities
-tests/
-└── integration/         # End-to-end conversion tests
+├── main.rs          # CLI entry point (minimal)
+├── lib.rs           # Library root, re-exports public API
+├── error.rs         # Centralized error types
+├── cli/             # CLI argument definitions (clap)
+├── converter/       # Format converters (trait-based)
+├── config/          # Configuration structs
+├── pdf/             # PDF generation backend
+└── utils/           # Utility functions
 ```
 
-### Build Commands
-```bash
-cargo build          # Build project
-cargo run -- <args>  # Run with arguments
-cargo check          # Verify compilation
-cargo test           # Run tests
-cargo install --path .  # Install locally
-```
+### Commands
+- Build: `cargo build`
+- Run: `cargo run -- <input_file> [options]`
+- Check: `cargo check`
+- Test: `cargo test -- --ignored` (integration tests ignored until implemented)
 
-### CLI Features (Implemented)
-- Auto-detect format from extension (docx, pptx, md)
-- 40+ configuration options (margins, fonts, quality, DPI, metadata)
-- Output path resolution, verbose/quiet modes
-- Auto-open PDF after conversion
+### User Preferences
+- Iterative development approach: start minimal, enhance progressively
+- ASCII art logo in `--help` output displaying "PDFpstein"
+- Follow Rust 2024 edition conventions
+- Doc comments (`///`) on all public items
 
 ## Recent Actions
 
-1. **[DONE]** Analyzed initial project structure (flat `src/cli/mod.rs` with all CLI logic)
-2. **[DONE]** Refactored to modular architecture with 8 new directories
-3. **[DONE]** Created placeholder files for all modules with TODO comments
-4. **[DONE]** Fixed `Format` type re-export issue in `src/cli/mod.rs`
-5. **[DONE]** Fixed unused variable warnings in converter stubs
-6. **[DONE]** Project compiles cleanly with `cargo check`
-7. **[DONE]** Updated `QWEN.md` with comprehensive project context
+### Accomplishments
+1. **Added ASCII art logo** to `--help` command using clap's `before_help` attribute
+2. **Simplified CLI for v0.1.0** - Removed 40+ advanced options to focus on core conversion:
+   - Kept: file input, output path, format selection, open, quiet, verbose
+   - Removed: formatting, layout, quality, metadata, and performance options
+3. **Updated roadmap** - Created versioned feature releases (v0.2.0–v0.6.0) for removed features
+4. **Verified compilation** - Code compiles successfully with simplified CLI
 
-### Key Files Created/Modified
-- `src/lib.rs` - Library root with module declarations
-- `src/error.rs` - Centralized error handling
-- `src/converter/mod.rs` - Converter trait + factory
-- `src/converter/{docx,pptx,md}.rs` - Format-specific stubs
-- `src/config/options.rs` - ConversionOptions struct
-- `src/pdf/metadata.rs` - PDF metadata handling
-- `src/utils/{path,fs}.rs` - Utility functions
-- `tests/integration/*.rs` - Integration test stubs
+### Key Decisions
+- Defer advanced features (margins, fonts, DPI, metadata, etc.) to future releases
+- Focus v0.1.0 on basic PDF conversion functionality only
+- Maintain library structure for future crate publishing potential
 
 ## Current Plan
 
-| # | Task | Status |
-|---|------|--------|
-| 1 | CLI argument parsing (40+ options) | [DONE] |
-| 2 | Project structure refactoring | [DONE] |
-| 3 | Error handling scaffold | [DONE] |
-| 4 | Converter trait definition | [DONE] |
-| 5 | Markdown to PDF conversion | [TODO] |
-| 6 | DOCX to PDF conversion | [TODO] |
-| 7 | PPTX to PDF conversion | [TODO] |
-| 8 | PDF generation backend | [TODO] |
-| 9 | Integration tests | [TODO] |
+### v0.1.0 - Core Conversion [IN PROGRESS]
+1. [TODO] Implement Markdown parser (simplest format, recommended starting point)
+2. [TODO] Implement DOCX parser (most common use case)
+3. [TODO] Implement PPTX parser (slide-to-page conversion)
+4. [TODO] Implement basic PDF generation backend
+5. [TODO] Connect converter factory to main.rs conversion logic
 
-### Next Steps
-1. **Add dependencies** for format parsing (`pulldown-cmark`, `docx-rs`) and PDF generation (`printpdf` or `lopdf`)
-2. **Implement `ConversionOptions::from_args()`** to bridge CLI args to config
-3. **Start with Markdown converter** (simplest format) as proof of concept
-4. **Implement actual error variants** in `Error` enum
-5. **Enable integration tests** once converters are functional
+### v0.2.0 - Formatting Options [TODO]
+- Paper size, margins, font family/size, line height
 
-### Roadmap (from `roadmap.md`)
-- [ ] Parse DOCX
-- [ ] Parse Markdown
-- [ ] Parse PPTX
+### v0.3.0 - Layout Options [TODO]
+- Landscape orientation, page numbers, table of contents
+
+### v0.4.0 - Quality Options [TODO]
+- DPI configuration, image compression
+
+### v0.5.0 - PDF Output Options [TODO]
+- Password protection, PDF metadata
+
+### v0.6.0 - Performance Options [TODO]
+- Parallel workers, memory limits
+
+## Open Questions
+- PDF generation library selection pending (options: `printpdf`, `lopdf`, or external tool integration)
+- DOCX/PPTX parsing library selection pending
 
 ---
 
 ## Summary Metadata
-**Update time**: 2026-03-03T07:25:05.005Z 
+**Update time**: 2026-03-03T18:54:16.475Z 

@@ -6,13 +6,9 @@
 /// PDF document metadata.
 #[derive(Debug, Clone, Default)]
 pub struct PdfMetadata {
-    /// Document title.
     pub title: Option<String>,
-    /// Document author.
     pub author: Option<String>,
-    /// Document subject.
     pub subject: Option<String>,
-    /// Document keywords.
     pub keywords: Option<String>,
 }
 

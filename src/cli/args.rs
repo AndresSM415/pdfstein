@@ -1,10 +1,12 @@
-//! CLI argument definitions and validation.
+//! Main CLI arguments and subcommand orchestration.
 //!
-//! This module contains the main Args struct and related types
-//! for parsing command-line arguments using clap.
+//! This module defines the top-level Args struct that holds the selected
+//! subcommand, along with shared helper methods.
 
 use clap::{Parser, Subcommand, ValueEnum};
 use std::path::{Path, PathBuf};
+
+use crate::cli::commands::{DocxCommand, MdCommand, PptxCommand};
 
 /// Supported input file formats.
 #[derive(Debug, Clone, ValueEnum)]
@@ -12,85 +14,6 @@ pub enum Format {
     Docx,
     Pptx,
     Md,
-}
-
-/// Convert Markdown to PDF.
-#[derive(Parser, Debug, Clone)]
-#[command(about = "Convert Markdown files to PDF")]
-pub struct MdCommand {
-    /// Input Markdown file (.md or .markdown)
-    #[arg(value_parser = validate_input_file)]
-    pub file: PathBuf,
-
-    /// Output PDF file path (defaults to same name as input)
-    #[arg(short, long)]
-    pub output: Option<PathBuf>,
-
-    /// Open the PDF after successful conversion
-    #[arg(short = 'O', long)]
-    pub open: bool,
-
-    /// Suppress non-essential output messages
-    #[arg(short, long)]
-    pub quiet: bool,
-
-    /// Show verbose error messages and progress
-    #[arg(long)]
-    pub verbose: bool,
-}
-
-/// Convert DOCX to PDF.
-#[derive(Parser, Debug, Clone)]
-#[command(about = "Convert DOCX files to PDF")]
-pub struct DocxCommand {
-    /// Input DOCX file (.docx)
-    #[arg(value_parser = validate_input_file)]
-    pub file: PathBuf,
-
-    /// Output PDF file path (defaults to same name as input)
-    #[arg(short, long)]
-    pub output: Option<PathBuf>,
-
-    /// Open the PDF after successful conversion
-    #[arg(short = 'O', long)]
-    pub open: bool,
-
-    /// Suppress non-essential output messages
-    #[arg(short, long)]
-    pub quiet: bool,
-
-    /// Show verbose error messages and progress
-    #[arg(long)]
-    pub verbose: bool,
-}
-
-/// Convert PPTX to PDF.
-#[derive(Parser, Debug, Clone)]
-#[command(about = "Convert PPTX files to PDF")]
-pub struct PptxCommand {
-    /// Input PPTX file (.pptx)
-    #[arg(value_parser = validate_input_file)]
-    pub file: PathBuf,
-
-    /// Output PDF file path (defaults to same name as input)
-    #[arg(short, long)]
-    pub output: Option<PathBuf>,
-
-    /// Slide range to convert (e.g., "1-5,8,10-")
-    #[arg(long)]
-    pub slide_range: Option<String>,
-
-    /// Open the PDF after successful conversion
-    #[arg(short = 'O', long)]
-    pub open: bool,
-
-    /// Suppress non-essential output messages
-    #[arg(short, long)]
-    pub quiet: bool,
-
-    /// Show verbose error messages and progress
-    #[arg(long)]
-    pub verbose: bool,
 }
 
 /// Which command to run.
@@ -112,8 +35,8 @@ Usage:
   pdfpstein <command> [options]
 
 Examples:
-  pdfpstein md readme.md
-  pdfpstein docx report.docx
+  pdfpstein md readme.md --gfm --highlight
+  pdfpstein docx report.docx --extract-images
   pdfpstein pptx slides.pptx --slide-range "1-5,8"
 "#)]
 #[command(bin_name = "pdfpstein")]
@@ -129,21 +52,6 @@ pub struct Args {
     /// Subcommand to run
     #[command(subcommand)]
     pub command: ConvertCommand,
-}
-
-/// Validate that input file exists and is readable.
-fn validate_input_file(path_str: &str) -> Result<PathBuf, String> {
-    let path = Path::new(path_str);
-
-    if !path.exists() {
-        return Err(format!("Input file does not exist: {}", path.display()));
-    }
-
-    if !path.is_file() {
-        return Err(format!("Path is not a file: {}", path.display()));
-    }
-
-    Ok(path.to_path_buf())
 }
 
 impl Args {

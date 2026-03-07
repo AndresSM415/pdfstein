@@ -26,18 +26,6 @@ pub struct MdCommand {
     #[arg(short, long)]
     pub output: Option<PathBuf>,
 
-    /// Enable GitHub Flavored Markdown extensions
-    #[arg(long)]
-    pub gfm: bool,
-
-    /// Enable syntax highlighting for code blocks
-    #[arg(long)]
-    pub highlight: bool,
-
-    /// Maximum heading depth for table of contents
-    #[arg(long, default_value = "3")]
-    pub toc_depth: u8,
-
     /// Open the PDF after successful conversion
     #[arg(short = 'O', long)]
     pub open: bool,
@@ -62,18 +50,6 @@ pub struct DocxCommand {
     /// Output PDF file path (defaults to same name as input)
     #[arg(short, long)]
     pub output: Option<PathBuf>,
-
-    /// Extract and embed images from the document
-    #[arg(long)]
-    pub extract_images: bool,
-
-    /// Preserve document styles and formatting
-    #[arg(long, default_value = "true")]
-    pub preserve_styles: bool,
-
-    /// Handle track changes (accept, reject, or show)
-    #[arg(long, default_value = "accept")]
-    pub track_changes: String,
 
     /// Open the PDF after successful conversion
     #[arg(short = 'O', long)]
@@ -103,14 +79,6 @@ pub struct PptxCommand {
     /// Slide range to convert (e.g., "1-5,8,10-")
     #[arg(long)]
     pub slide_range: Option<String>,
-
-    /// Include speaker notes in the PDF
-    #[arg(long)]
-    pub include_notes: bool,
-
-    /// Slides per page (1-9)
-    #[arg(long, default_value = "1")]
-    pub slides_per_page: u8,
 
     /// Open the PDF after successful conversion
     #[arg(short = 'O', long)]
@@ -145,7 +113,7 @@ Usage:
 
 Examples:
   pdfpstein md readme.md
-  pdfpstein docx report.docx --extract-images
+  pdfpstein docx report.docx
   pdfpstein pptx slides.pptx --slide-range "1-5,8"
 "#)]
 #[command(bin_name = "pdfpstein")]

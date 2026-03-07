@@ -3,6 +3,8 @@
 //! This is the main entry point for the pdfpstein command-line tool.
 //! It handles argument parsing, validation, and orchestrates the conversion process.
 
+use std::env::consts;
+
 use clap::Parser;
 use pdfpstein::cli::Args;
 use pdfpstein::error::Result;
@@ -14,30 +16,17 @@ fn main() {
     }
 }
 
-/// Main entry point that returns a Result for clean error handling.
 fn run() -> Result<()> {
     let args = Args::parse();
 
-    // Validate input file exists
-    if !args.file.exists() {
-        eprintln!("Error: file '{}' not found.", args.file.display());
-        std::process::exit(1);
-    }
-
+    let input_file = args.input_file();
     let output = args.resolve_output();
+    let format = args.detect_format();
 
-    let format = match args.detect_format() {
-        Ok(f) => f,
-        Err(e) => {
-            eprintln!("Error: {e}");
-            std::process::exit(1);
-        }
-    };
-
-    if !args.quiet {
+    if !args.is_quiet() {
         println!(
             "Converting '{}' -> '{}' (format: {:?})",
-            args.file.display(),
+            input_file.display(),
             output.display(),
             format
         );
@@ -46,15 +35,45 @@ fn run() -> Result<()> {
     // TODO: Perform conversion using the converter module
     // let converter = pdfpstein::converter::create_converter(format);
     // let options = pdfpstein::config::ConversionOptions::from_args(&args);
-    // converter.convert(&args.file, &output, &options)?;
+    // converter.convert(input_file, &output, &options)?;
 
-    if !args.quiet {
+    if !args.is_quiet() {
         println!("Done! PDF saved to '{}'", output.display());
     }
 
-    if args.open {
-        let _ = std::process::Command::new("open").arg(&output).status(); // macOS
-        // use "xdg-open" on Linux, "start" on Windows
+    if args.should_open() {
+        if !args.is_quiet() {
+            println!("Opening PDF...");
+        }
+
+        let open_result = match consts::OS {
+            "linux" => {
+                // Try common Linux open commands in order of preference
+                std::process::Command::new("xdg-open")
+                    .arg(&output)
+                    .status()
+                    .or_else(|_| {
+                        std::process::Command::new("gnome-open")
+                            .arg(&output)
+                            .status()
+                    })
+                    .or_else(|_| std::process::Command::new("kde-open").arg(&output).status())
+            }
+            "windows" => std::process::Command::new("cmd")
+                .arg("/c")
+                .arg("start")
+                .arg(&output)
+                .status(),
+            "macos" => std::process::Command::new("open").arg(&output).status(),
+            _ => Err(std::io::Error::new(
+                std::io::ErrorKind::Unsupported,
+                "Opening files is not supported on this platform",
+            )),
+        };
+
+        if let Err(e) = open_result {
+            eprintln!("Warning: Failed to open PDF: {}", e);
+        }
     }
 
     Ok(())

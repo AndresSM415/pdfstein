@@ -6,7 +6,7 @@
 use std::env::consts;
 
 use clap::Parser;
-use pdfpstein::cli::Args;
+use pdfpstein::cli::{Args, ConvertCommand};
 use pdfpstein::error::Result;
 
 fn main() {
@@ -33,9 +33,17 @@ fn run() -> Result<()> {
     }
 
     // TODO: Perform conversion using the converter module
-    // let converter = pdfpstein::converter::create_converter(format);
-    // let options = pdfpstein::config::ConversionOptions::from_args(&args);
-    // converter.convert(input_file, &output, &options)?;
+    match &args.command {
+        ConvertCommand::Md(cmd) => {
+            println!("{:?}", cmd)
+        }
+        ConvertCommand::Pptx(cmd) => {
+            println!("{:?}", cmd)
+        }
+        ConvertCommand::Docx(cmd) => {
+            println!("{:?}", cmd)
+        }
+    }
 
     if !args.is_quiet() {
         println!("Done! PDF saved to '{}'", output.display());

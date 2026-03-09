@@ -7,7 +7,6 @@ pub mod config;
 pub mod converter;
 pub mod error;
 pub mod pdf;
-pub mod utils;
 
 // Re-export commonly used types
 pub use converter::Converter;

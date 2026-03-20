@@ -6,7 +6,7 @@
 - [ ] Parse pptx
 - [ ] Validate format
 - [ ] Validate output
-- [ ] Workspace separation
+- [x] Workspace separation
 
 ## 0.2.0 - Formatting Options
 

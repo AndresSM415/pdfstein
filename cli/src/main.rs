@@ -6,8 +6,11 @@
 use std::env::consts;
 
 use clap::Parser;
-use pdfpstein::cli::{Args, ConvertCommand};
-use pdfpstein::error::Result;
+use core::error::Result;
+
+use crate::cli::{Args, ConvertCommand};
+
+mod cli;
 
 fn main() {
     if let Err(e) = run() {

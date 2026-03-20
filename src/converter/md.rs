@@ -8,11 +8,6 @@
 //! - Apply syntax highlighting for code blocks
 //! - Generate PDF with proper typography
 
-use super::Converter;
-use crate::config::ConversionOptions;
-use crate::error::Result;
-use std::path::{Path, PathBuf};
-
 /// Converter for Markdown files.
 pub struct MdConverter {
     // TODO: Add fields for converter state/configuration
@@ -23,26 +18,6 @@ impl MdConverter {
     pub fn new() -> Self {
         Self {}
     }
-}
 
-impl Default for MdConverter {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl Converter for MdConverter {
-    fn convert(
-        &self,
-        _input: &Path,
-        _output: &Path,
-        _options: &ConversionOptions,
-    ) -> Result<PathBuf> {
-        // TODO: Implement Markdown to PDF conversion
-        todo!("Markdown conversion not yet implemented")
-    }
-
-    fn format_name(&self) -> &'static str {
-        "md"
-    }
+    pub fn convert() {}
 }

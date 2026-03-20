@@ -3,11 +3,9 @@
 //! This library provides the core conversion functionality for the pdfpstein CLI tool.
 
 pub mod cli;
-pub mod config;
 pub mod converter;
 pub mod error;
 pub mod pdf;
 
 // Re-export commonly used types
-pub use converter::Converter;
 pub use error::Result;

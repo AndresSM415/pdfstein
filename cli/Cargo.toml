@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
-core = { path = "../core" }
+pdfstein_core = { path = "../pdfstein_core" }

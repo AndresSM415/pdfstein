@@ -6,7 +6,7 @@
 use std::env::consts;
 
 use clap::Parser;
-use core::error::Result;
+use pdfstein_core::error::Result;
 
 use crate::cli::{Args, ConvertCommand};
 

@@ -241,10 +241,10 @@ See [roadmap.md](roadmap.md) for detailed plans. Current development status:
 | CLI structure (subcommands) | ✅ Complete |
 | Format-specific options | ✅ Complete |
 | Common command interface | ✅ Complete |
-| Markdown conversion | 🚧 In Progress |
+| Markdown conversion | ✅ Complete |
 | DOCX conversion | ❌ Not Started |
 | PPTX conversion | ❌ Not Started |
-| PDF generation backend | ❌ Not Started |
+| PDF generation backend | ✅ Complete (via markdown2pdf) |
 
 ---
 

@@ -7,4 +7,5 @@ pub mod error;
 pub mod pdf;
 
 // Re-export commonly used types
+pub use converter::{Converter, MdConverter};
 pub use error::Result;

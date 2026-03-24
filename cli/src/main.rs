@@ -6,6 +6,7 @@
 use std::env::consts;
 
 use clap::Parser;
+use core::converter::MdConverter;
 use core::error::Result;
 
 use crate::cli::{Args, ConvertCommand};
@@ -35,10 +36,11 @@ fn run() -> Result<()> {
         );
     }
 
-    // TODO: Perform conversion using the converter module
+    // Perform conversion using the converter module
     match &args.command {
-        ConvertCommand::Md(cmd) => {
-            println!("{:?}", cmd)
+        ConvertCommand::Md(_) => {
+            let converter = MdConverter::new();
+            converter.convert(input_file, &output)?;
         }
         ConvertCommand::Pptx(cmd) => {
             println!("{:?}", cmd)
